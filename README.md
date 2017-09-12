@@ -1,4 +1,4 @@
-# vue-admin-spa-api
+# vue-admin-spa-api 1.0
 
 # 此node项目为 vue-admin-spa （https://github.com/lss5270/vue-admin-spa） 提供在线api接口#
 

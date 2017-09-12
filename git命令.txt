@@ -1,0 +1,22 @@
+﻿//0. git clone https://github.com/lss5270/vue-admin-spa.git //克隆源代码到本地
+//0. git pull //拉取代码（多人开发时，提交前先更新）或者github上传后，git也需要pull
+
+1. git add . //添加文件
+
+2.git commit -m "1.0"  //本地执行提交操作 “”尽量别为空
+
+3.git push //提交推送
+
+变成或者2步骤(提交dist时误用)
+git commit -am "some str"
+git push
+
+
+
+git push origin master //将本地主分支推到远程主分支
+
+git remote -v # 查看远程服务器地址和仓库名称
+
+git push # push所有分支
+
+git push origin master # 将本地主分支推到远程主分支

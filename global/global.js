@@ -54,14 +54,19 @@ exports.find = function (collectionName, json, callback) {
         if(json.studentName){
             //模糊查询
             cursor = db.collection(collectionName).find({"studentName": {$regex: json.studentName, $options:'i'}}).skip(ski).limit(limi);
+            db.collection(collectionName).find({"studentName": {$regex: json.studentName, $options:'i'}}).count({},function(err, count){
+                resData.data.total = count
+                console.log('总条数为：',resData.data.total)
+            })
         }else{
             //查询全部
             cursor = db.collection(collectionName).find({}).skip(ski).limit(limi);
+            db.collection(collectionName).find().count({},function(err, count){
+                resData.data.total = count
+                console.log('总条数为：',resData.data.total)
+            })
         }
-        db.collection(collectionName).find().count({},function(err, count){
-            resData.data.total = count
-            console.log('总条数为：',resData.data.total)
-        })
+        
         
         // 第一种写法 begin
         cursor.toArray(function(err , items){

@@ -27,7 +27,11 @@ exports.insertOne=function(collectionName,data,callback){
 }
 
 // 查找数据
-exports.find = function (collectionName, json, callback) {
+// collectionName, 表名
+// queryJson,     查询语句，直接塞find里面
+// pageJson,      分页参数
+// callback       回调函数
+exports.find = function (collectionName, querySql, pageJson,callback) {
     var result = [];    //结果数组
    
     //定义返回的数据json
@@ -49,32 +53,32 @@ exports.find = function (collectionName, json, callback) {
         
         //db.userInfo.find().skip(10);查询10条以后的数据
         //db.userInfo.find().limit(5);查询前5条数据
-        let limi = Number(json.pageSize); //每页多少条
-        let ski = (Number(json.currPage)-1)*limi
+        let limi = Number(pageJson.pageSize); //每页多少条
+        let ski = (Number(pageJson.currPage)-1)*limi
         //var queryResult = db.collection(collectionName).find(JSON).skip(ski).limit(limi);
         // var queryResult = db.collection(collectionName).find(JSON);
-        let queryResult;    //查询结果
-        let queryPar;       //查询条件  
+        let queryResult;                //查询结果
+        //let querySql = querySql;       //查询条件  
 
-        if(json.studentName){
-            //根据学生名字 模糊查询
-            queryPar = {"studentName": {$regex: json.studentName, $options:'i'}};
+        // if(json.studentName){
+        //     //根据学生名字 模糊查询
+        //     queryPar = {"studentName": {$regex: json.studentName, $options:'i'}};
 
-        }
-        // else if(json.beginDate){
-        //     //根据时间段查询数据。未成功~
-        //     queryPar={"financialDate":{ "$gte":new Date(json.beginDate).toString(),"$lte":new Date(json.endDate).toString()}}
-
-        //     console.log('呵呵条件为',queryPar)
         // }
-        else{
-            //没有传学生名字，默认查询全部
-            queryPar = {};
+        // // else if(json.beginDate){
+        // //     //根据时间段查询数据。未成功~
+        // //     queryPar={"financialDate":{ "$gte":new Date(json.beginDate).toString(),"$lte":new Date(json.endDate).toString()}}
 
-        }
-        queryResult = db.collection(collectionName).find(queryPar).skip(ski).limit(limi);
+        // //     console.log('呵呵条件为',queryPar)
+        // // }
+        // else{
+        //     //没有传学生名字，默认查询全部
+        //     queryPar = {};
 
-        db.collection(collectionName).find(queryPar).count({},function(err, count){
+        // }
+        queryResult = db.collection(collectionName).find(querySql).skip(ski).limit(limi);
+
+        db.collection(collectionName).find(querySql).count({},function(err, count){
             resData.data.total = count; //查询总条数
             console.log('总条数为：',resData.data.total)
         })
@@ -85,8 +89,8 @@ exports.find = function (collectionName, json, callback) {
             //重置接口返回的数据
             resData.data.data = items;
             //修改分页数据后 陷入死循环已解决 2017.9.9 lss
-            resData.data.currPage = Number(json.currPage);
-            resData.data.pageSize = Number(json.pageSize);
+            resData.data.currPage = Number(pageJson.currPage);
+            resData.data.pageSize = Number(pageJson.pageSize);
             
             //给前端回传json
             callback(null, resData);

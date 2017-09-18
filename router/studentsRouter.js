@@ -28,8 +28,22 @@ router.post('/addStudents',function(req,res){
 // 查找列表数据
 router.get("/queryStudents",function(req,res){
 
+    let querySql;
+    let pageJson = {
+            'pageSize': req.query.pageSize,
+            'currPage': req.query.currPage
+        }
+    if(req.query.studentName){
+        //根据学生名字 模糊查询
+        querySql = {"studentName": {$regex: req.query.studentName, $options:'i'}};
+
+    }else{
+        //没有传学生名字，默认查询全部
+        queryPar = {};
+
+    }    
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
-    db.find('students',req.query,function(err,result){
+    db.find('students',querySql,pageJson,function(err,result){
         if(err){
             console.log(err);
         }

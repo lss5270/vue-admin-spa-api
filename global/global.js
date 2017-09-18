@@ -15,11 +15,14 @@ function _connent(callback) {
 
 // 插入数据
 exports.insertOne=function(collectionName,data,callback){
+    //置入数据创建时间
+    data.createDate = new Date();
+
     _connent(function(err,db){
-         db.collection(collectionName).insert(data,function(err,result){
+        db.collection(collectionName).insert(data,function(err,result){
             callback(err,result);
             db.close();
-         })
+        })
     })
 }
 
@@ -27,7 +30,7 @@ exports.insertOne=function(collectionName,data,callback){
 exports.find = function (collectionName, json, callback) {
     var result = [];    //结果数组
    
-    //返回的数据对象
+    //定义返回的数据json
     let resData = {
           "resultCode": "0",
           "resultMsg": "",
@@ -48,38 +51,44 @@ exports.find = function (collectionName, json, callback) {
         //db.userInfo.find().limit(5);查询前5条数据
         let limi = Number(json.pageSize); //每页多少条
         let ski = (Number(json.currPage)-1)*limi
-        //var cursor = db.collection(collectionName).find(JSON).skip(ski).limit(limi);
-        // var cursor = db.collection(collectionName).find(JSON);
-        var cursor; //查询结果
+        //var queryResult = db.collection(collectionName).find(JSON).skip(ski).limit(limi);
+        // var queryResult = db.collection(collectionName).find(JSON);
+        let queryResult;    //查询结果
+        let queryPar;       //查询条件  
+
         if(json.studentName){
-            //模糊查询
-            cursor = db.collection(collectionName).find({"studentName": {$regex: json.studentName, $options:'i'}}).skip(ski).limit(limi);
-            db.collection(collectionName).find({"studentName": {$regex: json.studentName, $options:'i'}}).count({},function(err, count){
-                resData.data.total = count
-                console.log('总条数为：',resData.data.total)
-            })
-        }else{
-            //查询全部
-            cursor = db.collection(collectionName).find({}).skip(ski).limit(limi);
-            db.collection(collectionName).find().count({},function(err, count){
-                resData.data.total = count
-                console.log('总条数为：',resData.data.total)
-            })
+            //根据学生名字 模糊查询
+            queryPar = {"studentName": {$regex: json.studentName, $options:'i'}};
+
         }
-        
+        // else if(json.beginDate){
+        //     //根据时间段查询数据。未成功~
+        //     queryPar={"financialDate":{ "$gte":new Date(json.beginDate).toString(),"$lte":new Date(json.endDate).toString()}}
+
+        //     console.log('呵呵条件为',queryPar)
+        // }
+        else{
+            //没有传学生名字，默认查询全部
+            queryPar = {};
+
+        }
+        queryResult = db.collection(collectionName).find(queryPar).skip(ski).limit(limi);
+
+        db.collection(collectionName).find(queryPar).count({},function(err, count){
+            resData.data.total = count; //查询总条数
+            console.log('总条数为：',resData.data.total)
+        })
         
         // 第一种写法 begin
-        cursor.toArray(function(err , items){
-            console.log('查询学生表数据11：',items)
+        queryResult.toArray(function(err , items){
+            console.log('查询表数据===：',items)
             //重置接口返回的数据
             resData.data.data = items;
-            //resData.data.total = db.collection(collectionName).find({}).count(); //查询总条数
             //修改分页数据后 陷入死循环已解决 2017.9.9 lss
             resData.data.currPage = Number(json.currPage);
             resData.data.pageSize = Number(json.pageSize);
             
-            //截取对应多少条到多少条 给前端送回
-            //resData.data.data = resData.data.data.slice(ski,limi)
+            //给前端回传json
             callback(null, resData);
             db.close(); //关闭数据库
 
@@ -87,7 +96,7 @@ exports.find = function (collectionName, json, callback) {
         return false;
         // 第一种写法 end
 
-        cursor.each(function (err, doc) {
+        queryResult.each(function (err, doc) {
             
             if (err) {
                 callback(err, null);
@@ -153,6 +162,8 @@ exports.deleteMany = function (collectionName, json, callback) {
 
 //修改
 exports.updateMany = function (collectionName, json1, json2, callback) {
+    //置入数据修改时间
+    //json2['updateDate2'] = new Date();
 
     _connent(function (err, db) {
         db.collection(collectionName).updateMany(

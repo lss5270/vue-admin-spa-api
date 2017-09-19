@@ -8,7 +8,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 //引入路由
 var StudentsRouter = require('./router/studentsRouter');
 var financiaRouter = require('./router/financiaRouter');
+
 var uploadRouter = require('./router/uploadRouter');
+
+var userRouter = require('./router/userRouter');
+
 // var data={
 //         name:"你大爷",
 //         age:"好老了"
@@ -35,8 +39,12 @@ app.all('*', function(req, res, next) {
 
 app.use('/api', StudentsRouter);
 app.use('/api', financiaRouter);
+
 app.use('/api', uploadRouter);
 
+app.use('/api', userRouter);
+
+
 app.listen(3000,function(){
-    console.log("大爷您好，你的node服务已启动！请在浏览器窗口打开URL：localhost:3000")
+    console.log("您好，你的node服务已启动！请在浏览器窗口打开URL：localhost:3000")
 })

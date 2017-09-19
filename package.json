@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "ejsexcel": "^3.4.9",
     "express": "^4.15.4",
     "mongodb": "^2.2.31"
   }

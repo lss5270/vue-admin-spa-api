@@ -5,6 +5,9 @@ var app=express();
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+// app.use(express.static('uploadFile'));  //静态资源访问处理
+app.use('/static', express.static('uploadFile'));
+
 //引入路由
 var StudentsRouter = require('./router/studentsRouter');
 var financiaRouter = require('./router/financiaRouter');

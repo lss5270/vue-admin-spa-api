@@ -13,7 +13,7 @@ var router = express.Router();
 
 
 // 数据导入 post
-router.post('/fileUpload',function(req,res){
+router.post('/importFinancialExcel',function(req,res){
     console.log("进来了-----");
     //1.先处理上传
         // 第一步：new一个实例
@@ -96,6 +96,8 @@ function excel2json(res,excelPath){
     res.json(resData );
 
     function financialInsert(res,insertData){
+        insertData.financialDateDate = new Date(insertData.financialDate);
+        
         db.insertOne('financialManage',insertData,function(err,result){
             if (err) {
                 console.log('报错啦====',err)

@@ -1,5 +1,6 @@
 var db=require('./../global/global.js');
 var express = require('express');
+var financialList=require('./../global/financialList.js');
 // var ObjectID = require('mongodb').ObjectID; //查询ID模块
 
 var xlsx = require('node-xlsx');
@@ -54,7 +55,9 @@ router.post('/importFinancialExcel',function(req,res){
 });
 
 //插入数据表的英文字段
-let arr = ['financialDate','companyIncome','onlinePay','manualDeposit','rechargeTotal'];
+// let arr = ['financialDate','companyIncome','onlinePay','manualDeposit','rechargeTotal'];
+let arr = financialList[1];
+
 //提交入参： {"financialDate":"2017-9-19","companyIncome":"22","onlinePay":"22","manualDeposit":"22","manualDeductions":"","expendTotal":"","prepaidUser":"","drawingsUsr":"","watercourse":"","downProfit":null,"depositDiscounts":null,"activityDiscounts":null,"returnMoney":null,"rechargeTotal":66,"ARPPU":66,"rechargeBalance":66,"upProfits":0}
 function excel2json(res,excelPath){
     // var xlsx = require('node-xlsx');
@@ -92,8 +95,10 @@ function excel2json(res,excelPath){
             
           }
         };
-
-    res.json(resData );
+    setTimeout(function(){
+    	res.json(resData );
+    },1000)
+    	
 
     function financialInsert(res,insertData){
         insertData.financialDateDate = new Date(insertData.financialDate);
@@ -103,7 +108,7 @@ function excel2json(res,excelPath){
                 console.log('报错啦====',err)
             };
             // res.send(result);
-            
+            // res.json(resData );
         }) 
     }
 

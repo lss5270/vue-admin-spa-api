@@ -11,15 +11,9 @@ app.use('/static', express.static('uploadFile'));
 //引入路由
 var StudentsRouter = require('./router/studentsRouter');
 var financiaRouter = require('./router/financiaRouter');
-
 var uploadRouter = require('./router/uploadRouter');
-
 var userRouter = require('./router/userRouter');
 
-// var data={
-//         name:"你大爷",
-//         age:"好老了"
-//     }
 
 //拦截所以api接口设置头部信息（不能放底部，why？）
 app.all('*', function(req, res, next) {
@@ -42,9 +36,7 @@ app.all('*', function(req, res, next) {
 
 app.use('/api', StudentsRouter);
 app.use('/api', financiaRouter);
-
 app.use('/api', uploadRouter);
-
 app.use('/api', userRouter);
 
 

@@ -15,6 +15,8 @@ router.post('/financialAdd',function(req,res){
     
     let data = req.body; //{name:'你大爷',age:18}
 
+        data.financialDateDate = new Date(data.financialDate);
+
     db.insertOne('financialManage',data,function(err,result){
         if (err) {
             console.log(err)
@@ -32,17 +34,20 @@ router.get("/financialListQuery",function(req,res){
             'pageSize': req.query.pageSize,
             'currPage': req.query.currPage
         }
-        // if(req.query.beginDate){
-        //     //根据时间段查询数据。未成功~
-        //     querySql={"financialDate":{ "$gte":new Date(json.beginDate).toString(),"$lte":new Date(json.endDate).toString()}}
+    let json = req.query;
 
-        //     console.log('呵呵条件为',querySql)
-        // }
-        //else{
+        if(json.beginDate){
+            //根据时间段查询数据。未成功~
+            //时间查询，数据库字段必须为date，不能是string。
+            querySql={"financialDateDate":{$gte: new Date(json.beginDate),$lte:new Date(json.endDate) }}
+
+            console.log('呵呵条件为',querySql)
+        }
+        else{
             //没有传参，默认查询全部
             querySql = {};
 
-        //}
+        }
 
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
     db.find('financialManage',querySql,pageJson,function(err,result){

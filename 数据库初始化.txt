@@ -22,3 +22,6 @@ db.user.insert({
 方法二（Robo）：
 右键点击user表 - Insert Documents - 复制上面对象的数据，粘贴 - save
 
+
+备注：初始化完成之后，就可以使用账号：admin，密码：1，在登录界面进行登录。
+

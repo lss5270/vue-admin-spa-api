@@ -85,7 +85,7 @@ exports.find = function (collectionName, querySql, pageJson,callback) {
         
         // 第一种写法 begin
         queryResult.toArray(function(err , items){
-            console.log('查询表数据===：',items)
+            // console.log('查询表数据===：',items)
             //重置接口返回的数据
             resData.data.data = items;
             //修改分页数据后 陷入死循环已解决 2017.9.9 lss
@@ -122,6 +122,27 @@ exports.find = function (collectionName, querySql, pageJson,callback) {
     });
 }
 
+//判断账户是否已经存在
+exports.findExistUser = function (collectionName, json, callback) {
+    var queryResult = [];
+    //返回的数据对象
+    let resData = {
+            "resultCode": "0",
+            "data": null
+        };
+    //连接数据库，连接之后查找所有
+    _connent(function (err, db) {
+        queryResult = db.collection(collectionName).find(json);
+        queryResult.toArray(function(err , items){
+            resData.data = items;
+            //给前端回传json
+            callback(null, resData);
+            db.close(); //关闭数据库
+
+        });
+    });
+}
+
 // 查找单条数据
 exports.findItem = function (collectionName, json, callback) {
     var result = [];    //结果数组
@@ -137,15 +158,13 @@ exports.findItem = function (collectionName, json, callback) {
     _connent(function (err, db) {
         db.collection(collectionName).findOne(json,function (err, items){
             
-            console.log(json,'全部数据：',items);
+            console.log('单条查找到的数据：',items);
             resData.data = items;
             callback(null, resData);
             db.close()
             
         });
          
-        
-       
     });
 }
 

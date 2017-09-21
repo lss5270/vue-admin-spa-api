@@ -2,6 +2,7 @@
 node_modules/
 dist/
 static/ckeditor
+uploadFile/
 
 npm-debug.log
 test/unit/coverage

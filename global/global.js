@@ -53,29 +53,12 @@ exports.find = function (collectionName, querySql, pageJson,callback) {
         
         //db.userInfo.find().skip(10);查询10条以后的数据
         //db.userInfo.find().limit(5);查询前5条数据
-        let limi = Number(pageJson.pageSize); //每页多少条
-        let ski = (Number(pageJson.currPage)-1)*limi
+        let limi = pageJson ? Number(pageJson.pageSize) : 10; //每页多少条
+        let ski = pageJson ? (Number(pageJson.currPage)-1)*limi :1;
         //var queryResult = db.collection(collectionName).find(JSON).skip(ski).limit(limi);
         // var queryResult = db.collection(collectionName).find(JSON);
         let queryResult;                //查询结果
-        //let querySql = querySql;       //查询条件  
-
-        // if(json.studentName){
-        //     //根据学生名字 模糊查询
-        //     queryPar = {"studentName": {$regex: json.studentName, $options:'i'}};
-
-        // }
-        // // else if(json.beginDate){
-        // //     //根据时间段查询数据。未成功~
-        // //     queryPar={"financialDate":{ "$gte":new Date(json.beginDate).toString(),"$lte":new Date(json.endDate).toString()}}
-
-        // //     console.log('呵呵条件为',queryPar)
-        // // }
-        // else{
-        //     //没有传学生名字，默认查询全部
-        //     queryPar = {};
-
-        // }
+        
         queryResult = db.collection(collectionName).find(querySql).skip(ski).limit(limi);
 
         db.collection(collectionName).find(querySql).count({},function(err, count){

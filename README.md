@@ -24,8 +24,8 @@
     请求参数：{studentName:'张三'}
     
     4.学生信息修改
-    请求链接：http://localhost:3000/api/studentUpdate
-    请求方法：get
+    请求链接：http://localhost:3000/api/modifyStudents
+    请求方法：post
     请求参数：{id:59b27cde2adf8527a45a7a92,studentName:'李四'}
     
     5.学生信息详情查询

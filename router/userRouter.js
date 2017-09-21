@@ -2,6 +2,10 @@ var db=require('./../global/global.js');
 var express = require('express');
 var ObjectID = require('mongodb').ObjectID; //查询ID模块
 
+var userInfoTemplate = require('./../global/userInfo.js');
+
+// console.log('======',userInfoTemplate)
+
 var router = express.Router();
 
 // 插入数据
@@ -104,6 +108,96 @@ router.post("/modifyUser",function(req,res){
             res.send(result);
         }
     );
+});
+
+//登录
+router.get("/login",function(req,res){
+    //查找4个参数，在哪个集合查，查什么，查完之后做什么
+
+    let data = req.query;
+    console.log('=======',data)
+    db.find('user', {"userName": data.userName}, {},function(err,result){
+        if(err){
+            console.log(err);
+        }
+        console.log('查到的账号信息为：',result)
+        let itemData = result.data.data[0];
+
+        //定义给登录接口返回的信息模板
+        let resData = {
+              "resultCode": "0",
+              "resultMsg": "登录出错返回信息1",
+              "data":{  
+                    // "token": "aabbccdd",
+                    // "uid": "236e3402dbab51ea17f9f6f360993233",
+                           
+                }
+            };
+
+        if(!itemData){
+            //账号不存在
+            console.log('账号不存在！')
+            resData.resultCode = '-1';
+            resData.resultMsg = '账号不存在！';
+        }
+        else if(itemData._id && itemData.password === data.password){
+            //账号 密码正确
+            console.log('账号 密码正确')
+            resData.resultCode = '0';
+            resData.resultMsg = '';
+            resData.data.uid = itemData._id;
+
+        }else if(itemData._id && itemData.password !== data.password){
+            //账号存在，但是密码不正确
+            console.log('账号存在，但是密码不正确')
+            resData.resultCode = '-1';
+            resData.resultMsg = '密码不正确!';
+        }
+
+        res.send(resData);
+        // res.send(result);
+    });
+});
+
+// 根据id查询用户相关信息
+router.get("/getUserInfo",function(req,res){
+    let resData = userInfoTemplate;
+
+    //查找4个参数，在哪个集合查，查什么，查完之后做什么
+    db.findItem('user',{"_id": new ObjectID(req.query._id)},function(err,result){
+        if(err){
+            console.log(err);
+        }
+        let userData = result.data;
+
+        console.log('用户信息为',userData)
+
+        delete userData.password;       //去除密码
+
+        //设置用户基本信息
+        resData.data.baseInfo =  userData;       
+        resData.data.baseInfo.avatar =  "http://wx4.sinaimg.cn/thumb150/8f9a6d2ely1ffxo1ifuruj21w01w0b2a.jpg";
+
+        //设置菜单权限信息
+        resData.data.permissions =  {
+                    "/index/readme":true,
+                    "/index/personalInfo":true,
+                    "/errorpage/401":false,
+                    "/errorpage/404":false,
+                    "/systemSet/permissionsManage":true,
+                    "/systemSet/loginLog":true,
+                    "/financialManage/financialAdd":userData.role!=='10012'?true:false,
+                    "/financialManage/financialUpdate":userData.role!=='10012'?true:false,
+                    "/financialManage/financialList":true,
+                    "/financialManage/financialEchart":true,
+                    "/user/userList": userData.role=='10010'?true:false,
+                    
+        };     
+
+
+        res.send(resData);
+        // res.send(result);
+    });
 });
 
 module.exports = router;

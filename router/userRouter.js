@@ -49,7 +49,7 @@ router.get("/queryUser",function(req,res){
 //判断账户是否重复
 router.get("/existUser",function(req,res){
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
-    db.findExistUser('user', {"userName": {$regex: req.query.userName, $options:'i'}}, function(err,result){
+    db.findExistUser('user', {"userName": req.query.userName}, function(err,result){
         if(err){
             console.log(err);
         }

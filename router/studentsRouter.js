@@ -13,7 +13,7 @@ router.post('/addStudents',function(req,res){
     //正常是：get使用req.query去拿前端传参，post使用req.body
     res.setHeader('Access-Control-Allow-Origin', '*'); //设置接口跨域，提供给第三者使用
     
-    let data = req.body; //{name:'你大爷',age:18}
+    let data = req.body; //
 
     db.insertOne('students',data,function(err,result){
         if (err) {

@@ -1,0 +1,24 @@
+数据库名：test
+
+新建表名：user、financialManage
+
+
+登录和数据库密码已经进行md5加密，首次使用请往user表中插入以下数据：
+{
+    "userName" : "admin2",
+    "password" : "43b724755e5f781c3b369d1018847eb6",
+    "nickname" : "管理员",
+    "role" : "10010"
+}
+
+方法一（命令行）：
+db.user.insert({
+    "userName" : "admin2",
+    "password" : "43b724755e5f781c3b369d1018847eb6",
+    "nickname" : "管理员",
+    "role" : "10010"
+})
+
+方法二（Robo）：
+右键点击user表 - Insert Documents - 复制上面对象的数据，粘贴 - save
+

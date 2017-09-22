@@ -110,7 +110,7 @@ router.post("/modifyUser",function(req,res){
     );
 });
 
-//登录
+//登录 9-21
 router.get("/login",function(req,res){
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
 
@@ -159,7 +159,7 @@ router.get("/login",function(req,res){
     });
 });
 
-// 根据id查询用户相关信息
+// 根据id查询用户相关信息 9-21
 router.get("/getUserInfo",function(req,res){
     let resData = userInfoTemplate;
 
@@ -198,6 +198,78 @@ router.get("/getUserInfo",function(req,res){
         res.send(resData);
         // res.send(result);
     });
+});
+
+// 密码校验  9-22
+router.get("/validatePassword",function(req,res){
+    //查找4个参数，在哪个集合查，查什么，查完之后做什么
+
+    let data = req.query;
+    let resData = {
+              "resultCode": "0",
+              "resultMsg": "登录出错返回信息1",
+              "data":{  
+                    'result': false
+                           
+                }
+            };
+
+    db.findItem('user',{"_id": new ObjectID(data._id)},function(err,result){
+        if(err){
+            console.log(err);
+        }
+        console.log('---',result)
+
+        if(result && result.data.password == data.password){
+            resData.data.result = true
+        }else{
+            resData.data.result = false
+        }
+        //给前端回传
+        res.send(resData);
+    });
+});
+
+// 密码修改  9-22
+router.post("/modifyPassword",function(req,res){
+    //查找4个参数，在哪个集合查，查什么，查完之后做什么
+
+    let data = req.body;
+    let _id = new ObjectID(data._id);
+
+    // let resData = {
+    //           "resultCode": "0",
+    //           "resultMsg": "登录出错返回信息1",
+    //           "data":{  
+    //                 'result': false
+                           
+    //             }
+    //         };
+
+   
+    let newData = {
+        'oldPassword': data.oldPassword,    //存入旧密码，以便后期对旧密码校验，如腾讯
+        'password' : data.newPassword       //把旧密码重置
+    };
+
+    db.updateMany(
+        "user",         //集合名字
+
+        {
+            "_id":  _id     //要改哪里
+        },
+
+        {
+            $set: newData      //改哪些字段  data中不能包含_id,因为id不能修改
+        },
+
+        function(err,result){   //改完之后做什么
+            if(err){
+                console.log(err);
+            }
+            res.send(result);
+        }
+    );
 });
 
 module.exports = router;

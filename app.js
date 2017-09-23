@@ -15,6 +15,13 @@ var uploadRouter = require('./router/uploadRouter');
 var userRouter = require('./router/userRouter');
 
 
+function getClientIp(req) {
+        return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    };
+
 //拦截所以api接口设置头部信息（不能放底部，why？）
 app.all('*', function(req, res, next) {
   //跨域
@@ -24,7 +31,7 @@ app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Credentials', true);
 
-  console.log('前端的请求方法：',req.method);
+  console.log('前端的请求方法：',req.method,'请求ip为：',getClientIp(req) );
   console.log(req.url,'前端传进来的参数为===：',req.method == 'GET'?req.query:req.body)
 
   if ('OPTIONS' == req.method) {
@@ -40,6 +47,9 @@ app.use('/api', uploadRouter);
 app.use('/api', userRouter);
 
 
-app.listen(3000,function(){
+app.listen(3000, '0.0.0.0',function(){
     console.log("您好，你的node服务已启动！请在浏览器窗口打开URL：localhost:3000")
 })
+
+//解决ip娶不到的问题:
+//http.createServer().listen()的默认是ipv6，你可以改成.listen(port, “0.0.0.0”)强制指定为ipv4.

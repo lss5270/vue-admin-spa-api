@@ -63,9 +63,10 @@ function excel2json(res,excelPath){
     // var xlsx = require('node-xlsx');
     // var fs = require('fs');
     //读取文件内容
-    var obj = xlsx.parse(__dirname+'./../'+excelPath);
-    var excelObj=obj[0].data;
-    console.log('解析的json--------',excelObj);
+    console.log('------111-',excelPath)
+    let obj = xlsx.parse(__dirname+'./../'+excelPath); //2次上传路径 经常解析错误。
+    let excelObj=obj[0].data;
+    // console.log('解析的json--------',excelObj);
     /*[ [ '时间', '公司入款', '线上支付', '人工存入', '充值合计' ],
      [ '2017-9-17', '33366', '22', '111', '466' ],
      [ '2017-9-19', '100190', '1', '1', '3' ],
@@ -81,10 +82,10 @@ function excel2json(res,excelPath){
             insertData[arr[j]] = item[j]
         }
         
-        console.log('=====',insertData)
+        // console.log('=====',insertData)
         // return false;
         // //插入数据的是{}，非数组。多次插入
-        financialInsert(res,insertData)
+        financialInsert(insertData)
         
     }
     //定义返回的数据json
@@ -95,24 +96,29 @@ function excel2json(res,excelPath){
             
           }
         };
-    setTimeout(function(){
-    	res.json(resData );
-    },1000)
-    	
-
-    function financialInsert(res,insertData){
+   
+    function financialInsert(insertData){
         insertData.financialDateDate = new Date(insertData.financialDate);
         
         db.insertOne('financialManage',insertData,function(err,result){
             if (err) {
                 console.log('报错啦====',err)
             };
-            // res.send(result);
-            // res.json(resData );
+            // res.send(resData);
+            //res.json(resData );
         }) 
     }
+    setTimeout(function(){
+        res.json(resData );
 
-    //return false;
+        //删除上传的文件
+        fs.unlink(__dirname+'./../'+excelPath, (err) => {
+            if (err) throw err;
+            console.log('成功删除',excelPath);
+        });
+    },2222)
+
+    return false;
     
 }
 function excel2json2(res,excelPath){
@@ -126,7 +132,7 @@ function excel2json2(res,excelPath){
         console.log("************  read success:getExcelArr");
         let workBook=exlJson;
         workSheets=workBook[0];
-        console.log('解析的json--------',workSheets);
+        // console.log('解析的json--------',workSheets);
 
         workSheets.forEach((item,index)=>{
                 console.log((index+1)+" row:"+item.join('    '));

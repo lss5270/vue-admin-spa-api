@@ -43,7 +43,10 @@ router.post('/importFinancialExcel',function(req,res){
             // res.json(jsonData)
 
             //excel2json(res,newpath)
-            excel2json(res,newpath)
+            setTimeout(function(){
+                excel2json(res,newpath)
+            },1234)
+            
             //正常此处应该有插表的业务代码，把数据保存在数据库。此处省略。lss 2017/9/5
             
         });
@@ -64,7 +67,7 @@ function excel2json(res,excelPath){
     // var fs = require('fs');
     //读取文件内容
     console.log('------111-',excelPath)
-    let obj = xlsx.parse(__dirname+'./../'+excelPath); //2次上传路径 经常解析错误。
+    let obj = xlsx.parse(__dirname+'./../'+excelPath); //2次上传路径 经常解析错误。(目测是文件写入需要时间)
     let excelObj=obj[0].data;
     // console.log('解析的json--------',excelObj);
     /*[ [ '时间', '公司入款', '线上支付', '人工存入', '充值合计' ],
@@ -108,7 +111,8 @@ function excel2json(res,excelPath){
             //res.json(resData );
         }) 
     }
-    setTimeout(function(){
+    // setTimeout(function(){
+        //给接口回传数据
         res.json(resData );
 
         //删除上传的文件
@@ -116,7 +120,7 @@ function excel2json(res,excelPath){
             if (err) throw err;
             console.log('成功删除',excelPath);
         });
-    },2222)
+    // },2222)
 
     return false;
     

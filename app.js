@@ -1,12 +1,15 @@
 var express=require('express');
 var bodyParser = require('body-parser'); //引入body拿参的中间件模块
 var app=express();
+var fs=require('fs');   //提供更改名字模块
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // app.use(express.static('uploadFile'));  //静态资源访问处理
 app.use('/static', express.static('uploadFile'));
+app.use(express.static('dist'));
+// app.use('/static', express.static('dist'));
 
 //引入路由
 var StudentsRouter = require('./router/studentsRouter');
@@ -41,6 +44,15 @@ app.all('*', function(req, res, next) {
   }
 });
 
+//默认首页路由
+app.get('/', function (req, res,next) {
+    fs.readFile('./dist/index.html',function(err,data){
+        res.writeHead(200,{"Content-type":"text/html;charset=UTF-8"})
+        res.end(data);
+    })
+    
+  
+});
 app.use('/api', StudentsRouter);
 app.use('/api', financiaRouter);
 app.use('/api', uploadRouter);

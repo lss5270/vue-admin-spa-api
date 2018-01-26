@@ -4,7 +4,8 @@
   "description": "",
   "main": "fengzhuang2.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pm2": "pm2 start app.js"
   },
   "author": "",
   "license": "ISC",

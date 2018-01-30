@@ -4,12 +4,14 @@
   "description": "",
   "main": "fengzhuang2.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pm2": "pm2 start app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.1",
+    "cors": "^2.8.4",
     "ejsexcel": "^3.4.9",
     "express": "^4.15.4",
     "formidable": "^1.1.1",

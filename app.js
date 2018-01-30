@@ -3,6 +3,9 @@ var bodyParser = require('body-parser'); //引入body拿参的中间件模块
 var app=express();
 var fs=require('fs');   //提供更改名字模块
 
+// var cors = require('cors') //跨域资源共享（ CORS ）
+// app.use(cors())
+
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 

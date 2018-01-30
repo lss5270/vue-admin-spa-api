@@ -2,6 +2,17 @@
 
 # 此node项目为两个前端项目（https://github.com/lss5270/vue-admin-spa） 提供在线api接口#
 
+## 如何运行
+下载项目
+```
+ git clone https://github.com/lss5270/vue-admin-spa-api.git
+```
+
+进入到vue-admin-spa-api目录
+```
+ npm run pm2
+```
+
 ## 此后端代码，主要提供以下功能接口：
 - 学生信息模块的增删查改
 - 头像上传

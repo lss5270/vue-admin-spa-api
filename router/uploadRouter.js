@@ -66,15 +66,12 @@ function excel2json(res,excelPath){
     // var xlsx = require('node-xlsx');
     // var fs = require('fs');
     //读取文件内容
-<<<<<<< HEAD
+
     console.log('------11122-',excelPath)
     let _excelPath = path.resolve(__dirname, '../'+excelPath);
     // let obj = xlsx.parse(__dirname+'./../'+excelPath); //2次上传路径 经常解析错误。(目测是文件写入需要时间)
     let obj = xlsx.parse(_excelPath); //2次上传路径 经常解析错误。(目测是文件写入需要时间)
-=======
-    console.log('------1112-',excelPath)
-    let obj = xlsx.parse('./../'+excelPath); //2次上传路径 经常解析错误。(目测是文件写入需要时间)
->>>>>>> b09c47013e3801e4b33638e30ed612ea6028a61c
+
     let excelObj=obj[0].data;
     // console.log('解析的json--------',excelObj);
     /*[ [ '时间', '公司入款', '线上支付', '人工存入', '充值合计' ],
@@ -123,11 +120,9 @@ function excel2json(res,excelPath){
         res.json(resData );
 
         //删除上传的文件
-<<<<<<< HEAD
+
         fs.unlink(_excelPath, (err) => {
-=======
-        fs.unlink('./../'+excelPath, (err) => {
->>>>>>> b09c47013e3801e4b33638e30ed612ea6028a61c
+
             if (err) throw err;
             console.log('成功删除',_excelPath);
         });

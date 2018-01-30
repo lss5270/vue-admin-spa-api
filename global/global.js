@@ -3,12 +3,12 @@ var MongoClient =require('mongodb').MongoClient;
 //封装成为内部函数
 function _connent(callback) {
      var url='mongodb://127.0.0.1:27017/test';
-<<<<<<< HEAD
+
      //connect(url, user, password)
      
-=======
+
      // var url='mongodb://60.205.209.210:27017/test';
->>>>>>> b09c47013e3801e4b33638e30ed612ea6028a61c
+
     //连接数据库
     MongoClient.connect(url, function (err, db) {
         if (err) {

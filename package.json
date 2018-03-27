@@ -1,8 +1,8 @@
 {
-  "name": "mynode",
+  "name": "vue-admin-spa-api",
   "version": "1.0.0",
   "description": "",
-  "main": "fengzhuang2.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pm2": "pm2 start app.js"

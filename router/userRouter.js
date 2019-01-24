@@ -191,6 +191,9 @@ router.get("/getUserInfo",function(req,res){
                     "/financialManage/financialList":true,
                     "/financialManage/financialEchart":true,
                     "/user/userList": userData.role=='10010'?true:false,
+                    "/lottery/memberManage":true, //抽奖模块添加，2019-1-24
+                    "/lottery/lotteryRecord":true,
+                    "/lottery/lotteryTest":true,
                     
         };     
 

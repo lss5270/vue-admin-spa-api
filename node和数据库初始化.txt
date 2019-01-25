@@ -2,7 +2,7 @@
 
 2.新建数据库名：test
 
-3.新建表名：user、financialManage
+3.新建表名：user
 
 
 4.登录和数据库密码已经进行md5加密，首次使用请往user表中插入以下数据：

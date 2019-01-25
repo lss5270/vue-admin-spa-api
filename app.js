@@ -20,6 +20,7 @@ var financiaRouter = require('./router/financiaRouter');
 var uploadRouter = require('./router/uploadRouter');
 var userRouter = require('./router/userRouter');
 var productRouter = require('./router/productRouter');
+var memberManage = require('./router/memberManage');
 
 function getClientIp(req) {
         return req.headers['x-forwarded-for'] ||
@@ -61,6 +62,7 @@ app.use('/api', financiaRouter);
 app.use('/api', uploadRouter);
 app.use('/api', userRouter);
 app.use('/api', productRouter);
+app.use('/api', memberManage);
 
 app.listen(3000, '0.0.0.0',function(){
     console.log("您好，你的node服务已启动！请在浏览器窗口打开URL：localhost:3000")

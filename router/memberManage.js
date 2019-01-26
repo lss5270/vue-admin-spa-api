@@ -89,6 +89,8 @@ router.post("/v2/modifyMember",function(req,res){
     delete data._id
     console.log('去id后的data=====',data)
 
+    data.recordDate = new Date(data.recordDate)
+    data.createDate = new Date(data.createDate)
     db.updateMany(
         "memberManage",         //集合名字
 

@@ -261,7 +261,7 @@ function excel2json02(res,excelPath){
                 let _id = new ObjectID(data._id);
                 delete data._id
 
-                let _num = data.firecrackerCount+insertData.firecrackerNumber
+                let _num = Number(data.firecrackerCount)+Number(insertData.firecrackerNumber)
                 console.log('去id后的data=====',data,_num)
 
                 db.updateMany(

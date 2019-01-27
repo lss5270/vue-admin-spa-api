@@ -180,7 +180,7 @@ router.post('/importMemberExcel',function(req,res){
     //3.连接数据库，并把数据存入
 });
 //插入数据表的英文字段
-let arr02 = ['userName','money','firecrackerNumber','recordDate','isBonus']
+let arr02 = ['userName','money','firecrackerNumber']
 
 //提交入参： {"financialDate":"2017-9-19","companyIncome":"22","onlinePay":"22","manualDeposit":"22","manualDeductions":"","expendTotal":"","prepaidUser":"","drawingsUsr":"","watercourse":"","downProfit":null,"depositDiscounts":null,"activityDiscounts":null,"returnMoney":null,"rechargeTotal":66,"ARPPU":66,"rechargeBalance":66,"upProfits":0}
 function excel2json02(res,excelPath){

@@ -205,7 +205,13 @@ function excel2json02(res,excelPath){
             
             insertData[arr02[j]] = item[j]
         }
-        
+        let Y = new Date().getFullYear()
+        let M = new Date().getMonth()+1
+        let D = new Date().getDate()
+        //手动置入日期 和 是否领取红包
+        insertData.recordDate = new Date(Y+'-'+M+'-'+D)
+        insertData.isBonus = '否'
+
         console.log('=====',insertData)
         // return false;
         // //插入数据的是{}，非数组。多次插入

@@ -38,15 +38,17 @@ router.get("/v2/queryLotteryRecord",function(req,res){
 });
 
 //红包开启接口
-router.get("/v2/lottery/type1",function(req,res){
+router.post("/v2/lottery/type1",function(req0,res){
 
+    let req = req0.body;
+    console.log('9999999',req)
     let querySql;
     let pageJson = {
-            'pageSize': req.query.pageSize,
-            'currPage': req.query.currPage
+            'pageSize': req.pageSize,
+            'currPage': req.currPage
         }
     
-    querySql = {"isBonus": "否","userName": req.query.userName,"recordDate":{$lte:new Date(req.query.endDate),$gte: new Date(req.query.beginDate)} }; 
+    querySql = {"isBonus": "否","userName": req.userName,"recordDate":{$lte:new Date(req.queryDate),$gte: new Date(req.queryDate)} }; 
     console.log('-------querySql',querySql)  
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
     db.find('memberManage',querySql,pageJson,function(err,result){
@@ -99,15 +101,16 @@ router.get("/v2/lottery/type1",function(req,res){
 });
 
 //爆竹开启接口
-router.get("/v2/lottery/type2",function(req,res){
+router.post("/v2/lottery/type2",function(req0,res){
 
+    let req = req0.body;
     let querySql;
     let pageJson = {
-            'pageSize': req.query.pageSize,
-            'currPage': req.query.currPage
+            'pageSize': req.pageSize,
+            'currPage': req.currPage
         }
     
-    querySql = {"userName": req.query.userName}; 
+    querySql = {"userName": req.userName}; 
     console.log('-------querySql',querySql)  
     //查找4个参数，在哪个集合查，查什么，查完之后做什么
     db.find('firecrackerCount',querySql,pageJson,function(err,result){
